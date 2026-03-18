@@ -615,6 +615,10 @@ def background_refinement_task(current_schedule, refinement_level, selected_teac
             elif v == '1': constraint_severities[k] = 'low'
             elif v == '0': constraint_severities[k] = 'disabled'
 
+        # ✨ إجبار تفعيل قيد الصباح أثناء التحسين فقط حتى لو عطله المستخدم
+        if constraint_severities.get('prefer_morning') == 'disabled':
+            constraint_severities['prefer_morning'] = 'low'
+
         conn.close()
 
         actual_selected_names = []

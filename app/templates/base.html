@@ -30,6 +30,8 @@
         <h1 style="margin: 0; font-size: 28px; font-weight: 900; letter-spacing: 1px;">📅 موزع الجداول الجامعية الذكي</h1>
         
         <div style="display: flex; gap: 10px;">
+            <button id="btn-about" style="background-color: #16a085; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.backgroundColor='#1abc9c'" onmouseout="this.style.backgroundColor='#16a085'">ℹ️ عن البرنامج</button>
+
             <button id="btn-save-settings" style="background-color: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.backgroundColor='#2ecc71'" onmouseout="this.style.backgroundColor='#27ae60'">💾 حفظ الإعدادات</button>
             
             <button id="btn-save-as" style="background-color: #2980b9; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.backgroundColor='#3498db'" onmouseout="this.style.backgroundColor='#2980b9'">📁 حفظ باسم...</button>
@@ -41,6 +43,56 @@
             <button onclick="shutdownServer()" style="background-color: #c0392b; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.backgroundColor='#e74c3c'" onmouseout="this.style.backgroundColor='#c0392b'">🛑 إيقاف الخادم</button>
         </div>
     </header>
+
+    <div id="aboutModal" style="display: none; position: fixed; z-index: 10001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);">
+        <div style="background-color: #fff; margin: 10% auto; padding: 30px; width: 350px; border-radius: 12px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; color: #333; direction: rtl;">
+            <span id="closeAboutBtn" style="position: absolute; top: 10px; left: 15px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer;" onmouseover="this.style.color='#e74c3c'" onmouseout="this.style.color='#aaa'">&times;</span>
+            
+            <h3 style="color: #2c3e50; margin-top: 0; margin-bottom: 10px; font-size: 22px;">موزع الجداول الجامعية الذكي</h3>
+            <p style="font-size: 15px; color: #7f8c8d; margin: 0;">الإصدار 1.0</p>
+            
+            <hr style="border-top: 1px solid #ecf0f1; margin: 20px 0;">
+            
+            <p style="font-size: 16px; margin-bottom: 5px;">تم تصميم وتطوير هذا النظام بواسطة:</p>
+            <p style="font-size: 24px; font-weight: bold; color: #2980b9; margin: 0;">الدكتور شعيب يحيى</p>
+            
+            <p style="font-size: 13px; color: #95a5a6; margin-top: 25px; margin-bottom: 0;">جميع الحقوق محفوظة &copy; 2026</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById("aboutModal");
+            var btn = document.getElementById("btn-about");
+            var span = document.getElementById("closeAboutBtn");
+
+            // فتح النافذة عند النقر على الزر
+            btn.onclick = function() {
+                modal.style.display = "block";
+                // تأثير حركة خفيف للظهور
+                modal.querySelector('div').style.animation = "fadeInDown 0.3s ease-out";
+            }
+
+            // إغلاق النافذة عند النقر على (X)
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // إغلاق النافذة عند النقر في أي مساحة فارغة خارجها
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 
     <nav class="tabs-nav">
         <button class="tab-btn active" onclick="openTab('tab-1', this)">1. البيانات الأساسية</button>
