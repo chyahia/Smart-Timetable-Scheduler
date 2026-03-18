@@ -3,13 +3,44 @@ from flask import g
 import os
 import sys
 
-def get_base_path():
-    """يحدد مسار قاعدة البيانات أينما كان التطبيق يعمل."""
+def get_smart_db_path(db_name="schedule_database.db", app_folder_name="SmartTimetableScheduler"):
+    """
+    دالة ذكية تحدد مسار قاعدة البيانات أينما كان التطبيق يعمل.
+    إذا كان المجلد محمياً (مثل Program Files)، تقوم بإنشاء المسار في AppData.
+    """
+    # 1. تحديد المجلد الرئيسي (سواء كان exe أو مجلد المشروع أثناء التطوير)
     if getattr(sys, 'frozen', False):
-        return os.path.dirname(sys.executable)
-    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        base_dir = os.path.dirname(sys.executable)
+    else:
+        # يرجع خطوتين للخلف لأن هذا الملف موجود داخل app/
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DATABASE_FILE = os.path.join(get_base_path(), 'schedule_database.db')
+    local_db_path = os.path.join(base_dir, db_name)
+
+    # 2. اختبار صلاحية الكتابة في المجلد الحالي
+    try:
+        test_file = os.path.join(base_dir, '.write_test')
+        with open(test_file, 'w') as f:
+            f.write('test')
+        os.remove(test_file)
+        
+        # إذا وصلنا هنا، يعني المجلد غير محمي، نستخدم المسار المحلي!
+        return local_db_path
+
+    except (IOError, OSError, PermissionError):
+        # 3. المجلد محمي، ننتقل فوراً إلى مسار المستخدم (AppData/Roaming)
+        appdata_dir = os.getenv('APPDATA')
+        safe_app_dir = os.path.join(appdata_dir, app_folder_name)
+        
+        # إنشاء المجلد الخاص بالبرنامج إذا لم يكن موجوداً
+        if not os.path.exists(safe_app_dir):
+            os.makedirs(safe_app_dir)
+            
+        # إرجاع المسار الآمن الجديد في AppData
+        return os.path.join(safe_app_dir, db_name)
+
+# يتم تحديد المسار الذكي مرة واحدة عند استدعاء هذا الملف
+DATABASE_FILE = get_smart_db_path()
 
 def get_db_connection():
     """تنشئ أو تجلب الاتصال الحالي بقاعدة البيانات."""
