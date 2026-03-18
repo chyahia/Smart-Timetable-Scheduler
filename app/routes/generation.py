@@ -210,6 +210,7 @@ def background_generation_task(strict_hierarchy, algorithms, algo_settings):
         # ====================================================================
         tabu_iterations = int(algo_settings.get('tabu_iterations', 1000))
         tabu_tenure = int(algo_settings.get('tabu_tenure', 10))
+        tabu_neighborhood = int(algo_settings.get('tabu_neighborhood', 50))
         
         lns_iterations = int(algo_settings.get('lns_iterations', 500))
         lns_ruin_factor = float(algo_settings.get('lns_ruin_factor', 20)) / 100.0 # تقسيم على 100 لأنها نسبة مئوية
@@ -268,7 +269,7 @@ def background_generation_task(strict_hierarchy, algorithms, algo_settings):
                 level_specific_large_rooms, specific_small_room_assignments, constraint_severities, 
                 mutation_hard_intensity=3, mutation_soft_probability=0.5, tabu_stagnation_threshold=50,
                 max_sessions_per_day=max_sessions_per_day, initial_solution=current_solution, 
-                max_iterations=tabu_iterations, tabu_tenure=tabu_tenure, neighborhood_size=50,  # <-- تم التغيير هنا
+                max_iterations=tabu_iterations, tabu_tenure=tabu_tenure, neighborhood_size=tabu_neighborhood,  # <-- تم التغيير هنا
                 consecutive_large_hall_rule=consecutive_large_hall_rule, progress_channel=SCHEDULING_STATE, 
                 prefer_morning_slots=prefer_morning_slots, use_strict_hierarchy=strict_hierarchy, non_sharing_teacher_pairs=non_sharing_teacher_pairs
             )

@@ -22,6 +22,7 @@ function startGeneration() {
     const algoSettings = {
         tabu_iterations: document.getElementById('tabu_iter')?.value,
         tabu_tenure: document.getElementById('tabu_tenure').value,
+        tabu_neighborhood: document.getElementById('tabu_neighborhood').value,
         lns_iterations: document.getElementById('lns_iter').value,
         lns_ruin_factor: document.getElementById('lns_ruin').value,
         vns_iterations: document.getElementById('vns_iter').value,
